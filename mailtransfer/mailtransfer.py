@@ -1,3 +1,4 @@
+import emails
 import logging
 import time
 import traceback
@@ -41,30 +42,43 @@ class MailTransfer():
 
     def get_unseen_messages(self):
         unseen_messages = []
-        for message in self.mailbox.fetch('UNSEEN'):
-            msg_from = message.from_
-            msg_subject = message.subject
-            msg_text = message.text
-            msg_html = message.html
-            new_message = {'msg_from': msg_from,
-                           'msg_subject': msg_subject,
-                           'msg_text': msg_text,
-                           'msg_html': msg_html}
-            unseen_messages.append(new_message)
-        return unseen_messages
+        try:
+            for message in self.mailbox.fetch('UNSEEN'):
+                msg_from = message.from_
+                msg_subject = message.subject
+                msg_text = message.text
+                msg_html = message.html
+                new_message = {'msg_from': msg_from,
+                               'msg_subject': msg_subject,
+                               'msg_text': msg_text,
+                               'msg_html': msg_html}
+                unseen_messages.append(new_message)
+            return unseen_messages
+        except Exception:
+            print(traceback.format_exc())
+
+    def send_messages(self, message_list):
+        for msg in message_list:
+            try:
+                full_message = emails.Message(html=msg['msg_html'],
+                                              subject=msg['msg_subject'],
+                                              mail_from=self.address_from)
+                response = full_message.send(to=self.address_to,
+                                             smtp={'host': self.smtp_server,
+                                                   'ssl': True,
+                                                   'user': self.address_from,
+                                                   'password': self.user_password})
+                 logging.debug(response)
+            except Exception:
+                print(traceback.format_exc())
 
     def run(self):
-        logging.basicConfig(level = logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG)
         logging.debug("Started")
         while True:
             self.mailbox = self.connect()
             self.login()
             unseen_messages = self.get_unseen_messages()
-            for i in unseen_messages:
-                print("-------")
-                print(i['msg_from'])
-                print(i['msg_subject'])
-                print(i['msg_text'])
-                print(i['msg_html'])
+            self.send_messages(unseen_messages)
             self.logout()
             time.sleep(int(self.check_interval))
