@@ -24,3 +24,4 @@ $ mailtransfer
 # Dependencies
 - colorama
 - configobj
+- imap_tools
