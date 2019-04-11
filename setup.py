@@ -10,7 +10,7 @@ setup(
     description='Simple linux tool for transfer mails from one mailserver to another mailserver',
     packages=find_packages(),
     long_description=open(join(dirname(__file__), 'README.md')).read(),
-    install_requires=['colorama', 'configobj', 'imap_tools'],
+    install_requires=['colorama', 'configobj', 'emails', 'imap_tools'],
     include_package_data=True,
     entry_points={
         'console_scripts':
