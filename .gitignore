@@ -1,0 +1,7 @@
+.vscode
+build
+dist
+env
+mailtransfer/__pycache__
+*.egg-info
+*.pyc
