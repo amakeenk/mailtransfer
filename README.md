@@ -21,3 +21,6 @@ $ chmod 0600 ~/.mailtransfer/mailtransfer.cfg
 $ vim mailtransfer.cfg
 $ mailtransfer
 ```
+# Dependencies
+- colorama
+- configobj
