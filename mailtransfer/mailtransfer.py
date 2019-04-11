@@ -68,7 +68,7 @@ class MailTransfer():
                                                    'ssl': True,
                                                    'user': self.address_from,
                                                    'password': self.user_password})
-                 logging.debug(response)
+                logging.debug(response)
             except Exception:
                 print(traceback.format_exc())
 
