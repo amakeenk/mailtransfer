@@ -25,5 +25,3 @@ def check_config_permissions(config_path):
         print("{}Config file {} have unsafely permissions (must be 0600).{}"
               .format(Fore.RED, config_path, Style.RESET_ALL))
         sys.exit(1)
-
-

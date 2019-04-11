@@ -11,7 +11,7 @@ or
 ```bash
 $ git clone https://github.com/amakeenk/mailtransfer
 $ cd mailtransfer
-$ python setup.py install
+$ python3 setup.py install
 ```
 # Usage
 ```bash
