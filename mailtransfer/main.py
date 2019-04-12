@@ -16,12 +16,14 @@ def main():
         address_from = config['address_from']
         address_to = config['address_to']
         check_interval = config['check_interval']
+        log_file = config['log_file']
         mt = MailTransfer(imap_server,
                           smtp_server,
                           address_from,
                           address_to,
                           user_password,
-                          check_interval)
+                          check_interval,
+                          log_file)
         mt.run()
 
 
