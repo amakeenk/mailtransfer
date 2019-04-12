@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
+import daemon
 from configobj import ConfigObj
 from pathlib import Path
 from .mailtransfer import MailTransfer
 from .utils import get_config_path, check_config_permissions
-
 
 def main():
     config_file_path = get_config_path()
@@ -24,7 +24,8 @@ def main():
                           user_password,
                           check_interval,
                           log_file)
-        mt.run()
+        with daemon.DaemonContext():
+            mt.run()
 
 
 if __name__ == "__main__":
