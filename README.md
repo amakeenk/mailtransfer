@@ -7,6 +7,10 @@ $ pip install git+https://github.com/amakeenk/mailtransfer
 ```
 or 
 ```bash
+$ pip install mailtransfer
+```
+or
+```bash
 $ git clone https://github.com/amakeenk/mailtransfer
 $ cd mailtransfer
 $ python3 setup.py install
