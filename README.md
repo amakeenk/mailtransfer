@@ -1,5 +1,3 @@
-# ! Work-In-Progress !
-
 # mailtransfer
 Simple linux tool for transfer mails from one mailserver to another mailserver
 
