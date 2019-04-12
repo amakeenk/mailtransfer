@@ -3,7 +3,7 @@ from os.path import join, dirname
 
 setup(
     name='mailtransfer',
-    version='1.0',
+    version='1.1',
     author='Alexander Makeenkov',
     author_email='whoami.tut@gmail.com',
     url='https://github.com/amakeenk/mailtransfer',
