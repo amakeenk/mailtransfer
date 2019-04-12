@@ -25,7 +25,7 @@ class MailTransfer():
 
     def connect(self):
         try:
-            return MailBox(self.imap_server) 
+            return MailBox(self.imap_server)
         except Exception:
             logging.debug(traceback.format_exc())
 
@@ -55,7 +55,8 @@ class MailTransfer():
                                'msg_text': msg_text,
                                'msg_html': msg_html}
                 unseen_messages.append(new_message)
-                logging.debug("New message from {}, subject: {}".format(msg_from, msg_subject))
+                logging.debug("New message from {}, subject: {}".
+                              format(msg_from, msg_subject))
             return unseen_messages
         except Exception:
             logging.debug(traceback.format_exc())
@@ -63,20 +64,23 @@ class MailTransfer():
     def send_messages(self, message_list):
         try:
             for msg in message_list:
-                full_message = emails.Message(html=msg['msg_html'],
-                                              subject=msg['msg_subject'],
-                                              mail_from=self.address_from)
-                response = full_message.send(to=self.address_to,
-                                             smtp={'host': self.smtp_server,
-                                                   'ssl': True,
-                                                   'user': self.address_from,
-                                                   'password': self.user_password})
+                full_msg = emails.Message(html=msg['msg_html'],
+                                          subject=msg['msg_subject'],
+                                          mail_from=self.address_from)
+                response = full_msg.send(to=self.address_to,
+                                         smtp={'host': self.smtp_server,
+                                               'ssl': True,
+                                               'user': self.address_from,
+                                               'password': self.user_password})
                 logging.debug(response)
         except Exception:
             logging.debug(traceback.format_exc())
 
     def run(self):
-        logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S', level=logging.DEBUG, filename=self.log_file)
+        logging.basicConfig(format='%(asctime)s %(message)s',
+                            datefmt='%m/%d/%Y %H:%M:%S',
+                            level=logging.DEBUG,
+                            filename=self.log_file)
         logging.debug("Started")
         while True:
             self.mailbox = self.connect()
