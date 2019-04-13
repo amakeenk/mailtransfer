@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 import stat
+import subprocess
 from colorama import Fore
 from colorama import Style
 from daemon import DaemonContext
@@ -62,7 +63,9 @@ def stop():
     pidfile = get_pidfile_path()
     if os.path.exists(pidfile):
         logging.debug("Stopping...")
-        os.kill(int(os.system("cat {}".format(pidfile))), 9)
+        pid = subprocess.check_output('cat {}'.format(pidfile), shell=True)
+        os.kill(int(pid), 9)
+        os.system('rm -f {}'.format(pidfile))
     else:
         print("{}Mailtransfer is not running{}"
               .format(Fore.RED, Style.RESET_ALL))
