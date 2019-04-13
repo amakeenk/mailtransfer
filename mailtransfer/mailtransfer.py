@@ -1,8 +1,8 @@
 import emails
-import logging
 import time
 import traceback
 from imap_tools import MailBox
+from .utils import logger
 
 
 class MailTransfer():
@@ -25,21 +25,21 @@ class MailTransfer():
         try:
             return MailBox(self.imap_server)
         except Exception:
-            logging.debug(traceback.format_exc())
+            logger(traceback.format_exc(), "EXCEPTION")
 
     def login(self):
         try:
             self.mailbox.login(self.address_from, self.user_password)
-            logging.debug("Login ok")
+            logger("Login ok", "INFO")
         except Exception:
-            logging.debug(traceback.format_exc())
+            logger(traceback.format_exc(), "EXCEPTION")
 
     def logout(self):
         try:
             self.mailbox.logout()
-            logging.debug("Logout ok")
+            logger("Logout ok", "INFO")
         except Exception:
-            logging.debug(traceback.format_exc())
+            logger(traceback.format_exc(), "EXCEPTION")
 
     def get_unseen_messages(self):
         unseen_messages = []
@@ -54,11 +54,11 @@ class MailTransfer():
                                'msg_text': msg_text,
                                'msg_html': msg_html}
                 unseen_messages.append(new_message)
-                logging.debug("New message from {}, subject: {}".
-                              format(msg_from, msg_subject))
+                logger("New message from {}, subject: {}".
+                              format(msg_from, msg_subject), "INFO")
             return unseen_messages
         except Exception:
-            logging.debug(traceback.format_exc())
+            logger(traceback.format_exc(), "EXCEPTION")
 
     def send_messages(self, message_list):
         try:
@@ -71,9 +71,9 @@ class MailTransfer():
                                                'ssl': True,
                                                'user': self.address_from,
                                                'password': self.user_password})
-                logging.debug(response)
+                logger(response, "INFO")
         except Exception:
-            logging.debug(traceback.format_exc())
+            logger(traceback.format_exc(), "EXCEPTION")
 
     def run(self):
         while True:

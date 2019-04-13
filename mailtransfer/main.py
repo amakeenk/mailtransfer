@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import logging
 import sys
 from configobj import ConfigObj
 from .mailtransfer import MailTransfer
@@ -28,11 +27,6 @@ def main():
             address_from = config['address_from']
             address_to = config['address_to']
             check_interval = config['check_interval']
-            log_file = config['log_file']
-            logging.basicConfig(format='%(asctime)s %(message)s',
-                                datefmt='%m/%d/%Y %H:%M:%S',
-                                level=logging.DEBUG,
-                                filename=log_file)
             mt = MailTransfer(imap_server,
                               smtp_server,
                               address_from,
