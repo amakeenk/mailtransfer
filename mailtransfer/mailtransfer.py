@@ -12,8 +12,7 @@ class MailTransfer():
                  address_from,
                  address_to,
                  user_password,
-                 check_interval,
-                 log_file):
+                 check_interval):
         self.mailbox = ""
         self.imap_server = imap_server
         self.smtp_server = smtp_server
@@ -21,7 +20,6 @@ class MailTransfer():
         self.address_to = address_to
         self.user_password = user_password
         self.check_interval = check_interval
-        self.log_file = log_file
 
     def connect(self):
         try:
@@ -39,6 +37,7 @@ class MailTransfer():
     def logout(self):
         try:
             self.mailbox.logout()
+            logging.debug("Logout ok")
         except Exception:
             logging.debug(traceback.format_exc())
 
@@ -77,16 +76,10 @@ class MailTransfer():
             logging.debug(traceback.format_exc())
 
     def run(self):
-        logging.basicConfig(format='%(asctime)s %(message)s',
-                            datefmt='%m/%d/%Y %H:%M:%S',
-                            level=logging.DEBUG,
-                            filename=self.log_file)
-        logging.debug("Started")
         while True:
             self.mailbox = self.connect()
             self.login()
             unseen_messages = self.get_unseen_messages()
             self.send_messages(unseen_messages)
             self.logout()
-            logging.debug("Logout ok")
             time.sleep(int(self.check_interval))
