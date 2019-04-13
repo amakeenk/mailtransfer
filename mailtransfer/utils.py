@@ -87,9 +87,16 @@ def restart(mt):
 
 def status():
     pidfile = get_pidfile_path()
+    config_file_path = get_configfile_path()
+    config = ConfigObj(config_file_path)
+    log_file = config['log_file']
     if os.path.exists(pidfile):
+        pid = subprocess.check_output('cat {}'.format(pidfile), shell=True)
         print("{}Mailtransfer is running{}"
               .format(Fore.GREEN, Style.RESET_ALL))
+        print("PID: {}".format(int(pid)))
+        print("Recent log messages:\n")
+        os.system('tail -10 {}'.format(log_file))
     else:
         print("{}Mailtransfer is not running{}"
               .format(Fore.GREEN, Style.RESET_ALL))
