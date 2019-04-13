@@ -54,8 +54,8 @@ class MailTransfer():
                                'msg_text': msg_text,
                                'msg_html': msg_html}
                 unseen_messages.append(new_message)
-                logger("New message from {}, subject: {}".
-                              format(msg_from, msg_subject), "INFO")
+                logger("New message from {}, subject: {}"
+                       .format(msg_from, msg_subject), "INFO")
             return unseen_messages
         except Exception:
             logger(traceback.format_exc(), "EXCEPTION")
