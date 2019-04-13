@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 
-import daemon
+from daemon import DaemonContext
+from daemon.pidfile import TimeoutPIDLockFile
 from configobj import ConfigObj
 from pathlib import Path
 from .mailtransfer import MailTransfer
-from .utils import get_config_path, check_config_permissions
+from .utils import get_configfile_path, check_config_permissions, get_pidfile_path
 
 def main():
-    config_file_path = get_config_path()
+    config_file_path = get_configfile_path()
     if check_config_permissions(config_file_path):
         config = ConfigObj(config_file_path)
         imap_server = config['imap_server']
@@ -24,7 +25,9 @@ def main():
                           user_password,
                           check_interval,
                           log_file)
-        with daemon.DaemonContext():
+        pidfile = get_pidfile_path()
+        daemon_context = DaemonContext(pidfile=TimeoutPIDLockFile(pidfile))
+        with daemon_context:
             mt.run()
 
 
