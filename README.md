@@ -21,7 +21,7 @@ $ mkdir ~/.mailtransfer
 $ cp mailtransfer-sample.cfg ~/.mailtransfer/mailtransfer.cfg
 $ chmod 0600 ~/.mailtransfer/mailtransfer.cfg
 $ vim mailtransfer.cfg
-$ mailtransfer
+$ mailtransfer start
 ```
 # Dependencies
 - colorama
