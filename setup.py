@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='mailtransfer',
-    version='1.1',
+    version='1.2',
     author='Alexander Makeenkov',
     author_email='whoami.tut@gmail.com',
     url='https://github.com/amakeenk/mailtransfer',
