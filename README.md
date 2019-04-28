@@ -3,14 +3,6 @@ Simple linux tool for transfer mails from one mailserver to another mailserver
 
 # Installation
 ```bash
-$ pip install git+https://github.com/amakeenk/mailtransfer
-```
-or 
-```bash
-$ pip install mailtransfer
-```
-or
-```bash
 $ git clone https://github.com/amakeenk/mailtransfer
 $ cd mailtransfer
 $ python3 setup.py install
