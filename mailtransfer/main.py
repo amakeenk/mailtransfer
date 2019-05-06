@@ -21,18 +21,17 @@ def main():
         if check_config_permissions(config_file_path):
             action = sys.argv[1]
             config = ConfigObj(config_file_path)
-            imap_server = config['imap_server']
-            smtp_server = config['smtp_server']
-            user_password = config['user_password']
-            address_from = config['address_from']
-            address_to = config['address_to']
-            check_interval = config['check_interval']
-            mt = MailTransfer(imap_server,
-                              smtp_server,
-                              address_from,
-                              address_to,
-                              user_password,
-                              check_interval)
+            imap_config = config['imap']
+            smtp_config = config['smtp']
+            other_config = config['other']
+            mt = MailTransfer(imap_config['imap_server'],
+                              imap_config['imap_login'],
+                              imap_config['imap_password'],
+                              smtp_config['smtp_server'],
+                              smtp_config['smtp_login'],
+                              smtp_config['smtp_password'],
+                              other_config['mail_to'],
+                              other_config['check_interval'])
             if action == "start":
                 start(mt)
             elif action == "stop":

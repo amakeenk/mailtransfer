@@ -8,17 +8,21 @@ from .utils import logger
 class MailTransfer():
     def __init__(self,
                  imap_server,
+                 imap_login,
+                 imap_password,
                  smtp_server,
-                 address_from,
-                 address_to,
-                 user_password,
+                 smtp_login,
+                 smtp_password,
+                 mail_to,
                  check_interval):
         self.mailbox = ""
         self.imap_server = imap_server
+        self.imap_login = imap_login
+        self.imap_password = imap_password
         self.smtp_server = smtp_server
-        self.address_from = address_from
-        self.address_to = address_to
-        self.user_password = user_password
+        self.smtp_login = smtp_login
+        self.smtp_password = smtp_password
+        self.mail_to = mail_to
         self.check_interval = check_interval
 
     def connect(self):
@@ -29,15 +33,17 @@ class MailTransfer():
 
     def login(self):
         try:
-            self.mailbox.login(self.address_from, self.user_password)
-            logger("Login ok", "INFO")
+            logger("Login...", "INFO")
+            self.mailbox.login(self.imap_login, self.imap_password)
+            logger("Successfully login to {}".format(self.imap_login), "INFO")
         except Exception:
             logger(traceback.format_exc(), "EXCEPTION")
 
     def logout(self):
         try:
+            logger("Logout...", "INFO")
             self.mailbox.logout()
-            logger("Logout ok", "INFO")
+            logger("Successfully logout", "INFO")
         except Exception:
             logger(traceback.format_exc(), "EXCEPTION")
 
@@ -65,12 +71,12 @@ class MailTransfer():
             for msg in message_list:
                 full_msg = emails.Message(html=msg['msg_html'],
                                           subject=msg['msg_subject'],
-                                          mail_from=self.address_from)
-                response = full_msg.send(to=self.address_to,
+                                          mail_from=self.imap_login)
+                response = full_msg.send(to=self.mail_to,
                                          smtp={'host': self.smtp_server,
                                                'ssl': True,
-                                               'user': self.address_from,
-                                               'password': self.user_password})
+                                               'user': self.smtp_login,
+                                               'password': self.smtp_password})
                 logger(response, "INFO")
         except Exception:
             logger(traceback.format_exc(), "EXCEPTION")
@@ -80,6 +86,9 @@ class MailTransfer():
             self.mailbox = self.connect()
             self.login()
             unseen_messages = self.get_unseen_messages()
-            self.send_messages(unseen_messages)
+            if len(unseen_messages) == 0:
+                logger("No new messages have", "INFO")
+            else:
+                self.send_messages(unseen_messages)
             self.logout()
             time.sleep(int(self.check_interval))

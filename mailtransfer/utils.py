@@ -54,7 +54,7 @@ def start(mt):
               .format(Fore.RED, Style.RESET_ALL))
         sys.exit(1)
     else:
-        logger("Starting...", "INFO")
+        logger("Starting mailtransfer...", "INFO")
         daemon_context = DaemonContext(pidfile=TimeoutPIDLockFile(pidfile))
         with daemon_context:
             mt.run()
@@ -63,7 +63,7 @@ def start(mt):
 def stop():
     pidfile = get_pidfile_path()
     if os.path.exists(pidfile):
-        logger("Stopping...", "INFO")
+        logger("Stopping mailtransfer...", "INFO")
         pid = subprocess.check_output('cat {}'.format(pidfile), shell=True)
         os.kill(int(pid), 9)
         os.system('rm -f {}'.format(pidfile))
@@ -76,7 +76,7 @@ def stop():
 def restart(mt):
     pidfile = get_pidfile_path()
     if os.path.exists(pidfile):
-        logger("Restarting...", "INFO")
+        logger("Restarting mailtransfer...", "INFO")
         stop()
         start(mt)
     else:
@@ -89,7 +89,7 @@ def status():
     pidfile = get_pidfile_path()
     config_file_path = get_configfile_path()
     config = ConfigObj(config_file_path)
-    log_file = config['log_file']
+    log_file = config['other']['log_file']
     if os.path.exists(pidfile):
         pid = subprocess.check_output('cat {}'.format(pidfile), shell=True)
         print("{}Mailtransfer is running{}"
@@ -110,7 +110,7 @@ def usage():
 def logger(message, level):
     config_file_path = get_configfile_path()
     config = ConfigObj(config_file_path)
-    log_file = config['log_file']
+    log_file = config['other']['log_file']
     if not os.path.exists(log_file):
         try:
             os.system('touch {}'.format(log_file))
