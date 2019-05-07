@@ -77,7 +77,7 @@ class MailTransfer():
                                                'ssl': True,
                                                'user': self.smtp_login,
                                                'password': self.smtp_password})
-                logger("Sending message status: ".format(response), "INFO")
+                logger("Sending message status: {}".format(response), "INFO")
                 if response.status_code != 250:
                     logger("Some error occured: {}".format(response.error), "ERROR")
 
